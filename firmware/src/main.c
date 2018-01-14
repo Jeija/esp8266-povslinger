@@ -124,7 +124,7 @@ void ledbar_timer_cb(void) {
 
 		leddata[y].r = 0x00;
 		leddata[y].g = 0x00;
-		leddata[y].b = 0x00;
+		leddata[y].b = 0x05;
 
 		if (xpos >= 0) {
 			if (text_getbit("Hello World!", xpos - 30 + ((millis / 50) % (12 * 6 + 40)), y))
