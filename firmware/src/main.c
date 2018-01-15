@@ -25,6 +25,15 @@ uint32_t swipe_starttime_back_current = 0;
 os_timer_t ledbar_timer;
 os_timer_t accelerometer_timer;
 
+// Main menu
+enum menu_function {
+	MENU_FUNC_TEXT = 0,
+	MENU_FUNC_IMAGE,
+	MENU_FUNC_FLASHLIGHT,
+	MENU_COUNT
+};
+enum menu_function menu = 0;
+
 // TODO: use temperature sensor
 
 /*
@@ -115,20 +124,21 @@ void ledbar_timer_cb(void) {
 	millis += LEDBAR_TIMER_PERIOD;
 
 	Color leddata[22];
-	uint8_t y;
-	for (y = 0; y < 22; ++y) {
+	uint8_t ypos;
+	for (ypos = 0; ypos < 22; ++ypos) {
 		int32_t xpos = get_current_xpos(22);
-		/*leddata[y].r = (xpos + y) % 6 <= 2 ? 0xff : 0x00;
-		leddata[y].g = 0x00;
-		leddata[y].b = (xpos + y) % 6 >= 3 ? 0xff : 0x00;*/
 
-		leddata[y].r = 0x00;
-		leddata[y].g = 0x00;
-		leddata[y].b = 0x05;
-
-		if (xpos >= 0) {
-			if (text_getbit("Hello World!", xpos - 30 + ((millis / 50) % (12 * 6 + 40)), y))
-				leddata[y].r = 0xff;
+		switch(menu) {
+			case MENU_FUNC_TEXT:
+				function_text(xpos, ypos, millis, &leddata[ypos]);
+				break;
+			case MENU_FUNC_FLASHLIGHT:
+				function_flashlight(xpos, ypos, millis, &leddata[ypos]);
+				break;
+			default:
+				leddata[ypos].r = ypos % 2 ? 0x05 : 0x00;
+				leddata[ypos].g = ypos % 2 ? 0x00 : 0x05;
+				leddata[ypos].b = 0x00;
 		}
 	}
 
@@ -177,6 +187,26 @@ int16_t swipelpf_getfiltered(void) {
 }
 
 /*
+ * Watch acceleration on z axis. High acceleration values indicate
+ * "choose next function in main menu".
+ */
+#define MENU_SWITCH_LOCK 300
+#define MENU_SWITCH_ACC_THRESHOLD 7000
+#define MENU_TIMER_PERIOD 20
+void handle_menu_switch(int16_t zacc) {
+	static uint32_t menu_switch_time = 0;
+
+	// Switch to next menu function if z acceleration exceeds threshold
+	// Then wait MENU_SWITCH_LOCK milliseconds before next function switch
+	if (zacc > MENU_SWITCH_ACC_THRESHOLD && millis - menu_switch_time > MENU_SWITCH_LOCK) {
+		os_printf("Menu switch\r\n");
+		menu_switch_time = millis;
+		if (++menu >= MENU_COUNT)
+			menu = 0;
+	}
+}
+
+/*
  * Watch accelerometer values and set control variables for LED bar output function
  *
  * First, the constant component (gravity) is removed by removing the component
@@ -194,11 +224,11 @@ bool accelerometer_previous_diff_positive = true;
 vec3s16 lis2dh_lpf;
 
 void accelerometer_timer_cb(void) {
+	// Reading acceleration values via I2C is a time-costly operation,
+	// therefore only read x-axis acceleration
 	vec3s16 acc;
-	lis2dh_getx(&acc.x);
-	acc.y = 0;
-	acc.z = 0;
-	//lis2dh_getacc(&acc);
+	lis2dh_getacc(&acc);
+	handle_menu_switch(acc.z);
 
 	// Restart accelerometer if chip has (likely) crashed
 	if (acc.x == 0 && acc.y == 0 && acc.z == 0) {

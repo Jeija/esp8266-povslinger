@@ -1,5 +1,5 @@
 # Esptool firmware download options
-PORT			:= /dev/ttyUSB0
+PORT			:= /dev/ttyUSB1
 BAUD			:= 921600
 
 # Directory structure
