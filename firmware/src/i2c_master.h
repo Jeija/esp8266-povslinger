@@ -69,7 +69,7 @@ void i2c_master_init(void);
 // XXX: Dirty hack, this ignores pretty much every I2C timing rule out there, but it works
 // Just replace all delay commands with a couple of NOPs, makes I2C a LOT faster (unsurprisingly). 
 //#define i2c_master_wait    os_delay_us
-#define i2c_master_wait(ms) asm("nop"); asm("nop"); asm("nop"); asm("nop"); asm("nop"); asm("nop")
+#define i2c_master_wait(ms) asm("nop"); asm("nop"); asm("nop"); asm("nop");
 void i2c_master_stop(void);
 void i2c_master_start(void);
 void i2c_master_setAck(uint8 level);

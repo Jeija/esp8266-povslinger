@@ -1,3 +1,5 @@
+#include <os_type.h>
+
 #ifndef _LIS2DH_H_
 #define _LIS2DH_H_
 

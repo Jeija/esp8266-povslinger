@@ -29,6 +29,7 @@ os_timer_t accelerometer_timer;
 enum menu_function {
 	MENU_FUNC_TEXT = 0,
 	MENU_FUNC_IMAGE,
+	MENU_FUNC_TEMPERATURE,
 	MENU_FUNC_FLASHLIGHT,
 	MENU_COUNT
 };
@@ -124,6 +125,7 @@ void ledbar_timer_cb(void) {
 	millis += LEDBAR_TIMER_PERIOD;
 
 	Color leddata[22];
+	os_memset(leddata, 0, sizeof(leddata));
 	uint8_t ypos;
 	for (ypos = 0; ypos < 22; ++ypos) {
 		int32_t xpos = get_current_xpos(22);
@@ -131,6 +133,9 @@ void ledbar_timer_cb(void) {
 		switch(menu) {
 			case MENU_FUNC_TEXT:
 				function_text(xpos, ypos, millis, &leddata[ypos]);
+				break;
+			case MENU_FUNC_TEMPERATURE:
+				function_temperature(xpos, ypos, millis, &leddata[ypos]);
 				break;
 			case MENU_FUNC_FLASHLIGHT:
 				function_flashlight(xpos, ypos, millis, &leddata[ypos]);
@@ -225,10 +230,16 @@ vec3s16 lis2dh_lpf;
 
 void accelerometer_timer_cb(void) {
 	// Reading acceleration values via I2C is a time-costly operation,
-	// therefore only read x-axis acceleration
+	// therefore only read x-axis acceleration most of the time and
+	// occasionally read all axes
 	vec3s16 acc;
-	lis2dh_getacc(&acc);
-	handle_menu_switch(acc.z);
+	static uint32_t axis_read_count = 0;
+	if (axis_read_count++ % 10 == 0) {
+		lis2dh_getacc(&acc);
+		handle_menu_switch(acc.z);
+	} else {
+		lis2dh_getx(&acc.x);
+	}
 
 	// Restart accelerometer if chip has (likely) crashed
 	if (acc.x == 0 && acc.y == 0 && acc.z == 0) {

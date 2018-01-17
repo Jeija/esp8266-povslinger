@@ -96,19 +96,19 @@ bool ICACHE_FLASH_ATTR lis2dh_get_temperature(int8_t *temp) {
 /*
  * Accelerometer Sensing
  */
-bool ICACHE_FLASH_ATTR lis2dh_getx(int16_t *out) {
+bool lis2dh_getx(int16_t *out) {
 	return lis2dh_read_lh_registers(LIS2DH_OUT_X_L, (uint16_t *) out);
 }
 
-bool ICACHE_FLASH_ATTR lis2dh_gety(int16_t *out) {
+bool lis2dh_gety(int16_t *out) {
 	return lis2dh_read_lh_registers(LIS2DH_OUT_Y_L, (uint16_t *) out);
 }
 
-bool ICACHE_FLASH_ATTR lis2dh_getz(int16_t *out) {
+bool lis2dh_getz(int16_t *out) {
 	return lis2dh_read_lh_registers(LIS2DH_OUT_Z_L, (uint16_t *) out);
 }
 
-bool ICACHE_FLASH_ATTR lis2dh_getacc(vec3s16 *out) {
+bool lis2dh_getacc(vec3s16 *out) {
 	uint8_t xyz_msb_lsb[6];
 	bool succ;
 
