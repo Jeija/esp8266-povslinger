@@ -28,7 +28,7 @@ os_timer_t accelerometer_timer;
 // Main menu
 enum menu_function {
 	MENU_FUNC_TEXT = 0,
-	MENU_FUNC_IMAGE,
+	MENU_FUNC_PIXELART,
 	MENU_FUNC_PLACEHEARTS,
 	MENU_FUNC_TEMPERATURE,
 	MENU_FUNC_FLASHLIGHT,
@@ -87,7 +87,7 @@ int32_t get_current_xpos(uint32_t width) {
 	 *     swipetime_bwd  swipetime_fwd
 	 *
 	 * Further explanation and derivation of the equations below can be
-	 * found in ../acceleration_model/explanation.tex
+	 * found in ../resources/acceleration_model/explanation.tex
 	 */
 	float xpos = 0;
 	if (!back) {
@@ -133,6 +133,9 @@ void ledbar_timer_cb(void) {
 			case MENU_FUNC_TEXT:
 				function_text(xpos, ypos, millis, &leddata[ypos]);
 				break;
+			case MENU_FUNC_PIXELART:
+				function_pixelart(xpos, ypos, millis, &leddata[ypos]);
+				break;
 			case MENU_FUNC_PLACEHEARTS:
 				function_placehearts(xpos, ypos, millis, &leddata[ypos]);
 				break;
@@ -165,7 +168,7 @@ void ledbar_timer_cb(void) {
 
 /*
  * Low-pass filter for swipe detection
- * sinc filter impulse response swipe_lpf generated using `../filterdesign/acc_lpf.m`
+ * sinc filter impulse response swipe_lpf generated using `../resources/filterdesign/acc_lpf.m`
  */
 const float swipelpf_ires[] = {0.01083, 0.01356, 0.01624, 0.01880, 0.02115, 0.02322, 0.02497, 0.02632, 0.02725, 0.02772, 0.02772, 0.02725, 0.02632, 0.02497, 0.02322, 0.02115, 0.01880, 0.01624, 0.01356, 0.01083};
 #define SWIPELPF_IRES_LENGTH (sizeof(swipelpf_ires) / sizeof(swipelpf_ires[0]))

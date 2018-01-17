@@ -1,4 +1,4 @@
-update=Sat 25 Nov 2017 15:24:28 CET
+update=Wed 17 Jan 2018 21:05:45 CET
 version=1
 last_client=kicad
 [pcbnew]
@@ -64,3 +64,13 @@ LibName32=valves
 LibName33=libs/ESP8266
 LibName34=libs/apa102-2020
 LibName35=sensors
+[schematic_editor]
+version=1
+PageLayoutDescrFile=
+PlotDirectoryName=
+SubpartIdSeparator=0
+SubpartFirstId=65
+NetFmtName=
+SpiceForceRefPrefix=0
+SpiceUseNetNumbers=0
+LabSize=60
