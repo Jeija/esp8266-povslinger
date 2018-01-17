@@ -71,7 +71,6 @@ void ICACHE_FLASH_ATTR lis2dh_dump_cfg(void) {
 
 /*
  * Temperature Sensing
- * TODO: not working
  */
 bool ICACHE_FLASH_ATTR lis2dh_request_temperature(void) {
 	return lis2dh_writebyte(LIS2DH_TEMP_CFG_REG, LIS2DH_TEMP_EN_MASK);

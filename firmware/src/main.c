@@ -29,13 +29,12 @@ os_timer_t accelerometer_timer;
 enum menu_function {
 	MENU_FUNC_TEXT = 0,
 	MENU_FUNC_IMAGE,
+	MENU_FUNC_PLACEHEARTS,
 	MENU_FUNC_TEMPERATURE,
 	MENU_FUNC_FLASHLIGHT,
 	MENU_COUNT
 };
 enum menu_function menu = 0;
-
-// TODO: use temperature sensor
 
 /*
  * Empirical method to estimate a position value based on the stored swipe start / end
@@ -134,6 +133,9 @@ void ledbar_timer_cb(void) {
 			case MENU_FUNC_TEXT:
 				function_text(xpos, ypos, millis, &leddata[ypos]);
 				break;
+			case MENU_FUNC_PLACEHEARTS:
+				function_placehearts(xpos, ypos, millis, &leddata[ypos]);
+				break;
 			case MENU_FUNC_TEMPERATURE:
 				function_temperature(xpos, ypos, millis, &leddata[ypos]);
 				break;
@@ -196,7 +198,7 @@ int16_t swipelpf_getfiltered(void) {
  * "choose next function in main menu".
  */
 #define MENU_SWITCH_LOCK 300
-#define MENU_SWITCH_ACC_THRESHOLD 7000
+#define MENU_SWITCH_ACC_THRESHOLD 8000
 #define MENU_TIMER_PERIOD 20
 void handle_menu_switch(int16_t zacc) {
 	static uint32_t menu_switch_time = 0;

@@ -1,5 +1,5 @@
 /*
- * Main menu function - Display text
+ * Main menu function - Show temperature bar
  */
 #include <os_type.h>
 
