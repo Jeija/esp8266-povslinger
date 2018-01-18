@@ -33,7 +33,7 @@ uint8_t pixelart_getbyte(uint16_t picnum, uint32_t x, uint32_t y, uint8_t color)
 	return (uint8_t) res;
 }
 
-#define NEW_PICTURE_PERIOD 1000
+#define NEW_PICTURE_PERIOD 5000
 void function_pixelart(int32_t xpos, uint8_t ypos, uint32_t millis, Color *rgb) {
 	// Choose new random picture every NEW_PICTURE_PERIOD milliseconds
 	static uint8_t picnum = 0;

@@ -6,7 +6,7 @@ void function_text(int32_t xpos, uint8_t ypos, uint32_t millis, Color *rgb) {
 	rgb->b = 0x05;
 
 	if (xpos >= 0) {
-		if (text_getbit("Hello World!", xpos - 30 + ((millis / 50) % (12 * 6 + 40)), ypos))
+		if (text_getbit("POV Display!", xpos - 30 + ((millis / 50) % (12 * 6 + 40)), ypos))
 			rgb->r = 0xff;
 	}
 }

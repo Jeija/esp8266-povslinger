@@ -27,8 +27,8 @@ os_timer_t accelerometer_timer;
 
 // Main menu
 enum menu_function {
-	MENU_FUNC_TEXT = 0,
-	MENU_FUNC_PIXELART,
+	MENU_FUNC_PIXELART = 0,
+	MENU_FUNC_TEXT,
 	MENU_FUNC_PLACEHEARTS,
 	MENU_FUNC_TEMPERATURE,
 	MENU_FUNC_FLASHLIGHT,
@@ -130,11 +130,11 @@ void ledbar_timer_cb(void) {
 		int32_t xpos = get_current_xpos(22);
 
 		switch(menu) {
-			case MENU_FUNC_TEXT:
-				function_text(xpos, ypos, millis, &leddata[ypos]);
-				break;
 			case MENU_FUNC_PIXELART:
 				function_pixelart(xpos, ypos, millis, &leddata[ypos]);
+				break;
+			case MENU_FUNC_TEXT:
+				function_text(xpos, ypos, millis, &leddata[ypos]);
 				break;
 			case MENU_FUNC_PLACEHEARTS:
 				function_placehearts(xpos, ypos, millis, &leddata[ypos]);
