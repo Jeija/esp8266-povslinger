@@ -40,13 +40,13 @@ EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
-Title ""
-Date ""
-Rev ""
-Comp ""
-Comment1 ""
-Comment2 ""
-Comment3 ""
+Title "ESP8266 Persistence of Vision Display"
+Date "2018-01-18"
+Rev "production"
+Comp "https://github.com/Jeija/esp8266-povslinger"
+Comment1 "Microcontroller: ESP8266 on ESP12-E module"
+Comment2 "Accelerometer: LIS2DH"
+Comment3 "Addressable LEDs: APA102-2020"
 Comment4 ""
 $EndDescr
 $Comp
