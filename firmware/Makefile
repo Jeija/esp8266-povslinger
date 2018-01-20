@@ -1,5 +1,5 @@
 # Esptool firmware download options
-PORT			:= /dev/ttyUSB1
+PORT			:= /dev/ttyUSB0
 BAUD			:= 921600
 
 # Directory structure
@@ -26,7 +26,7 @@ INCLUDES		:= -I $(SDK_DIR)/include -I $(SDK_DIR)/include/json -I $(SRCDIR)/
 # Project settings
 TARGET			:= main
 FLASH_FREQ		:= 80m
-FLASH_MODE		:= qio
+FLASH_MODE		:= dio
 FLASH_SIZE		:= 32m
 FLASH_OPT		:= --flash_freq $(FLASH_FREQ) --flash_mode $(FLASH_MODE) --flash_size $(FLASH_SIZE)
 
