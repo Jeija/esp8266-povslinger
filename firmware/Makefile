@@ -34,27 +34,25 @@ TARGET_ELF		:= $(BUILDDIR)/$(TARGET).elf
 TARGET_FLASH		:= $(BUILDDIR)/$(TARGET)-0x00000.bin
 TARGET_IROM		:= $(BUILDDIR)/$(TARGET)-0x10000.bin
 
-all: $(OBJDIR) $(BUILDDIR) $(TARGET_FLASH) $(TARGET_IROM)
+all: $(TARGET_FLASH) $(TARGET_IROM)
 	@echo Compilation successful
 	@echo Use \'make flash\' to flash firmware
 
 $(TARGET_FLASH) $(TARGET_IROM): $(TARGET_ELF)
+	@mkdir -p $(BUILDDIR)
 	$(ESPTOOL) elf2image $(FLASH_OPT) $^ --output $(BUILDDIR)/$(TARGET)-
 
 $(TARGET_ELF): $(OBJS)
+	@mkdir -p $(BUILDDIR)
 	$(LD) -L$(SDK_DIR)/lib $(LDFLAGS) $(LDLIBS) -o $@
 		
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
+	@mkdir -p $(OBJDIR)
 	$(CC) $(CFLAGS) $(INCLUDES) -MMD -MP -c $< -o $@
 
 $(OBJDIR)/%.d: $(SRCDIR)/%.c
+	@mkdir -p $(OBJDIR)
 	$(CC) $(CFLAGS) $(INCLUDES) -MM $< -MF $@
-
-$(OBJDIR):
-	mkdir -p $(OBJDIR)
-
-$(BUILDDIR):
-	mkdir -p $(BUILDDIR)
 
 flash: all
 	$(ESPTOOL) --port $(PORT) --baud $(BAUD) write_flash $(FLASH_OPT) 0x00000 $(TARGET_FLASH) 0x10000 $(TARGET_IROM)
